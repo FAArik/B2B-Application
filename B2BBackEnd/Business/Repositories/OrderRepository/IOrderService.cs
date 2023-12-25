@@ -1,19 +1,14 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Entities.Concrete;
 using Core.Utilities.Result.Abstract;
+using Entities.Concrete;
+using Entities.Dtos;
 
-namespace Business.Repositories.OrderRepository
+namespace Business.Repositories.OrderRepository;
+
+public interface IOrderService
 {
-    public interface IOrderService
-    {
-        Task<IResult> Add(Order order);
-        Task<IResult> Update(Order order);
-        Task<IResult> Delete(Order order);
-        Task<IDataResult<List<Order>>> GetList();
-        Task<IDataResult<Order>> GetById(int id);
-    }
+    Task<IResult> Add(int customerId);
+    Task<IResult> Update(Order order);
+    Task<IResult> Delete(Order order);
+    Task<IDataResult<List<Order>>> GetList();
+    Task<IDataResult<Order>> GetById(int id);
 }

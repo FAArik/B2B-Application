@@ -41,7 +41,7 @@ namespace Business.Repositories.BasketRepository
             return new SuccessResult(BasketMessages.Updated);
         }
 
-        [SecuredAspect()]
+        //[SecuredAspect()]
         [RemoveCacheAspect("IBasketService.Get")]
 
         public async Task<IResult> Delete(Basket basket)
