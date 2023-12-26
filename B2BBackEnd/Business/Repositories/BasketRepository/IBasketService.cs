@@ -11,5 +11,6 @@ public interface IBasketService
     Task<IResult> Delete(Basket basket);
     Task<IDataResult<List<Basket>>> GetList();
     Task<IDataResult<List<BasketListDto>>> GetListByCustomerId(int customerId);
+    Task<List<Basket>> GetListByProductId(int productId);
     Task<IDataResult<Basket>> GetById(int id);
 }

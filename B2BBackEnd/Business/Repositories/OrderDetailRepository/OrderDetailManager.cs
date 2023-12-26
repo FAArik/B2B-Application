@@ -1,19 +1,13 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Business.Repositories.OrderDetailRepository;
-using Entities.Concrete;
 using Business.Aspects.Secured;
-using Core.Aspects.Validation;
+using Business.Repositories.OrderDetailRepository.Constants;
+using Business.Repositories.OrderDetailRepository.Validation;
 using Core.Aspects.Caching;
 using Core.Aspects.Performance;
-using Business.Repositories.OrderDetailRepository.Validation;
-using Business.Repositories.OrderDetailRepository.Constants;
+using Core.Aspects.Validation;
 using Core.Utilities.Result.Abstract;
 using Core.Utilities.Result.Concrete;
 using DataAccess.Repositories.OrderDetailRepository;
+using Entities.Concrete;
 
 namespace Business.Repositories.OrderDetailRepository
 {
@@ -46,7 +40,7 @@ namespace Business.Repositories.OrderDetailRepository
             return new SuccessResult(OrderDetailMessages.Updated);
         }
 
-        [SecuredAspect()]
+        //[SecuredAspect()]
         [RemoveCacheAspect("IOrderDetailService.Get")]
 
         public async Task<IResult> Delete(OrderDetail orderDetail)
@@ -61,6 +55,20 @@ namespace Business.Repositories.OrderDetailRepository
         public async Task<IDataResult<List<OrderDetail>>> GetList()
         {
             return new SuccessDataResult<List<OrderDetail>>(await _orderDetailDal.GetAll());
+        }
+        //[SecuredAspect()]
+        [CacheAspect()]
+        [PerformanceAspect()]
+        public async Task<IDataResult<List<OrderDetail>>> GetListByOrderId(int orderId)
+        {
+            return new SuccessDataResult<List<OrderDetail>>(await _orderDetailDal.GetAll(x => x.OrderId == orderId));
+        }
+        //[SecuredAspect()]
+        [CacheAspect()]
+        [PerformanceAspect()]
+        public async Task<List<OrderDetail>> GetListByProductId(int productId)
+        {
+            return await _orderDetailDal.GetAll(x => x.ProductId == productId);
         }
 
         [SecuredAspect()]

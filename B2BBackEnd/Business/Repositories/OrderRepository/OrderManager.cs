@@ -79,11 +79,16 @@ namespace Business.Repositories.OrderRepository
             return new SuccessResult(OrderMessages.Updated);
         }
 
-        [SecuredAspect()]
+        //[SecuredAspect()]
         [RemoveCacheAspect("IOrderService.Get")]
 
         public async Task<IResult> Delete(Order order)
         {
+            var details = await _orderDetailService.GetListByOrderId(order.Id);
+            foreach (var detail in details.Data)
+            {
+                await _orderDetailService.Delete(detail);
+            }
             await _orderDal.Delete(order);
             return new SuccessResult(OrderMessages.Deleted);
         }

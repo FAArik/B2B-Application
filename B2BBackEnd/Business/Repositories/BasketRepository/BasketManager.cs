@@ -64,6 +64,13 @@ namespace Business.Repositories.BasketRepository
         {
             return new SuccessDataResult<List<BasketListDto>>(await _basketDal.GetListByCustomerId(customerId));
         }
+        //[SecuredAspect()]
+        [CacheAspect()]
+        [PerformanceAspect()]
+        public async Task<List<Basket>> GetListByProductId(int productId)
+        {
+            return await _basketDal.GetAll(x=>x.ProductId==productId);
+        }
 
         [SecuredAspect()]
         public async Task<IDataResult<Basket>> GetById(int id)
