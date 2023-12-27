@@ -12,7 +12,6 @@ export class AsideComponent implements OnInit {
   constructor(private AdminDecode: AdminDecodeService) { }
 
   ngOnInit(): void {
-    console.log(this.AdminDecode.getUserName())
     this.userName = this.AdminDecode.getUserName();
   }
 

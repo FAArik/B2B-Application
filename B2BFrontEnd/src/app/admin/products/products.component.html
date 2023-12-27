@@ -1,0 +1,142 @@
+<div class="content-wrapper">
+    <!-- Content Header (Page header) -->
+    <section class="content-header">
+        <div class="container-fluid">
+            <div class="row mb-2">
+                <div class="col-sm-6">
+                    <h1>Ürünler</h1>
+                </div>
+                <div class="col-sm-6">
+                    <ol class="breadcrumb float-sm-right">
+                        <li class="breadcrumb-item"><a routerLink="/admin" routerLinkActive="active"
+                                [routerLinkActiveOptions]="{exact:true}">Ana sayfa</a></li>
+                        <li class="breadcrumb-item active">Ürünler sayfası</li>
+                    </ol>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="content">
+        <div class="card">
+            <div class="card-header">
+                <h3 class="card-title">Ürün Listesi</h3>
+
+                <div class="card-tools">
+                    <button type="button" class="btn btn-tool" data-card-widget="collapse" title="Collapse">
+                        <i class="fas fa-minus"></i>
+                    </button>
+                    <button type="button" class="btn btn-tool" data-card-widget="remove" title="Remove">
+                        <i class="fas fa-times"></i>
+                    </button>
+                </div>
+            </div>
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="btn-group">
+                            <button class="btn btn-primary" data-bs-toggle="modal"
+                                data-bs-target="#productAddModal">Ürün
+                                Ekle</button>
+                            <button (click)="exportExcel()" class="btn btn-success">Excel'e aktar</button>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group offset-9" data-widget="sidebar-search">
+                            <input class="form-control" type="search" placeholder="Aranacak kelime"
+                                [(ngModel)]="filterText" [ngModelOptions]="{standalone:true}" aria-label="Search">
+                        </div>
+                    </div>
+                </div>
+                <table id="excel-table" class="table table-hover">
+                    <thead>
+                        <tr>
+                            <th>#</th>
+                            <th>Ürün Adı</th>
+                            <th>Ürün Resmi</th>
+                            <th>İşlemler</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr *ngFor="let product of products
+                        | productPipe:filterText 
+                        let index = index">
+                            <td [innerText]="index+1"></td>
+                            <td [innerText]="product.name"></td>
+                            <td>
+                                <img
+                                    [src]="product.mainImageUrl=='' ?  '../../../assets/img/noimage.jpg':product.mainImageUrl">
+                            </td>
+                            <td>
+                                <button class="btn btn-danger" [swal]="deleteSwal"
+                                    (confirm)="delete(product)">Sil</button>
+                                <button class="btn btn-success" (click)="getProduct(product)" data-bs-toggle="modal"
+                                    data-bs-target="#productEditModal">Ürün
+                                    Güncelle</button>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+        </div>
+    </section>
+</div>
+
+<div class="modal fade" id="productEditModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Ürün güncelle</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form #updateForm="ngForm">
+                    <div class="form-group">
+                        <label for="productName">Ürün Adı</label>
+                        <input type="text" autocomplete="off" [(ngModel)]="updproduct.name" #updproductName
+                            [ngModelOptions]="{standalone:true}" name="updproductName" required minlength="3"
+                            class="form-control" placeholder="Ürün adı giriniz" />
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-warning" [disabled]="!updateForm.form.valid"
+                    (click)="update()">Ürünü
+                    Güncelle</button>
+                <button type="button" id="productEditModalCloseBtn" class="btn btn-secondary"
+                    data-bs-dismiss="modal">Kapat</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="productAddModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Ürün Ekle</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form #addForm="ngForm">
+                    <div class="form-group">
+                        <label for="productName">Ürün Adı</label>
+                        <input type="text" autocomplete="off" ngModel name="productName" id="productName" #productName
+                            required minlength="3" class="form-control" placeholder="Ürün adı giriniz" />
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary" [disabled]="!addForm.valid" (click)="add(addForm)">Ürünü
+                    Ekle</button>
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Kapat</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+<swal #deleteSwal title="Sil?" text="Ürünü silmek istiyor musunuz?" type="question" [showCancelButton]="true"
+    [focusCancel]="true" [swalOptions]="{confirmButtonText:'Sil',cancelButtonText:'Vazgeç'}"></swal>

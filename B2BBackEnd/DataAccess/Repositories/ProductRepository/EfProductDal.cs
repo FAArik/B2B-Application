@@ -27,4 +27,18 @@ public class EfProductDal : EfEntityRepositoryBase<Product, SimpleContextDb>, IP
             return await result.OrderBy(x => x.Name).ToListAsync();
         }
     }
+    public async Task<List<ProductListDto>> GetListDto()
+    {
+        using (var context = new SimpleContextDb())
+        {
+            var result = from product in context.Products
+                         select new ProductListDto
+                         {
+                             Id = product.Id,
+                             Name = product.Name,
+                             MainImageUrl = (context.ProductImages.Where(p => p.ProductId == product.Id && p.IsMain == true).Count() > 0 ? context.ProductImages.Where(p => p.ProductId == product.Id && p.IsMain == true).Select(s => s.ImageUrl).FirstOrDefault() : ""),
+                         };
+            return await result.OrderBy(x => x.Name).ToListAsync();
+        }
+    }
 }

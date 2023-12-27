@@ -17,7 +17,7 @@ export class ErrorService {
     } else if (err.status == 405) {
       this.toastr.error("Bilinmeyen hata!")
     } else {
-      this.toastr.error(err.error.message)
+      this.toastr.error(err.error.Message)
     }
   }
 }

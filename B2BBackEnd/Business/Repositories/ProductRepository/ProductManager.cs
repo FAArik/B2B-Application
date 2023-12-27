@@ -64,7 +64,7 @@ public class ProductManager : IProductService
            await CheckIfProductExistInOrderDetails(product.Id)
             );
 
-        if (!result.Success)
+        if (result != null)
         {
             return result;
         }
@@ -85,12 +85,12 @@ public class ProductManager : IProductService
         return new SuccessResult(ProductMessages.Deleted);
     }
 
-    //[SecuredAspect("admin,prodcut.get")]
+    [SecuredAspect("admin,prodcut.get")]
     [CacheAspect()]
     [PerformanceAspect()]
-    public async Task<IDataResult<List<Product>>> GetList()
-    {
-        return new SuccessDataResult<List<Product>>(await _productDal.GetAll());
+    public async Task<IDataResult<List<ProductListDto>>> GetList()
+     {
+        return new SuccessDataResult<List<ProductListDto>>(await _productDal.GetListDto());
     }
 
     [SecuredAspect("admin,prodcut.delete")]
