@@ -32,6 +32,4 @@ export class ProductService {
     let api = this.apiUrl + "products/getbyid/" + id
     return this.http.get(api);
   }
-
-
 }

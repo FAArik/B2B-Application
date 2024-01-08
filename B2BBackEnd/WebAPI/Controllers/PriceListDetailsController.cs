@@ -58,6 +58,16 @@ namespace WebApi.Controllers
             }
             return BadRequest(result.Message);
         }
+        [HttpGet("[action]/{priceListid}")]
+        public async Task<IActionResult> GetListDto(int priceListid)
+        {
+            var result = await _priceListDetailService.GetListDto(priceListid);
+            if (result.Success)
+            {
+                return Ok(result);
+            }
+            return BadRequest(result.Message);
+        }
 
         [HttpGet("[action]/{id}")]
         public async Task<IActionResult> GetById(int id)

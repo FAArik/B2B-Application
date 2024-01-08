@@ -1,6 +1,8 @@
 using Business.Aspects.Secured;
+using Business.Repositories.CustomerRelationshipRepository;
 using Business.Repositories.CustomerRepository.Constants;
 using Business.Repositories.CustomerRepository.Validation;
+using Business.Repositories.OrderRepository;
 using Core.Aspects.Caching;
 using Core.Aspects.Performance;
 using Core.Aspects.Validation;
@@ -17,10 +19,14 @@ namespace Business.Repositories.CustomerRepository
     public class CustomerManager : ICustomerService
     {
         private readonly ICustomerDal _customerDal;
+        private readonly ICustomerRelationshipService _customerRelationshipService;
+        private readonly IOrderService _orderService;
 
-        public CustomerManager(ICustomerDal customerDal)
+        public CustomerManager(ICustomerDal customerDal, ICustomerRelationshipService customerRelationshipService, IOrderService orderService)
         {
             _customerDal = customerDal;
+            _customerRelationshipService = customerRelationshipService;
+            _orderService = orderService;
         }
 
         //[SecuredAspect()]
@@ -62,6 +68,13 @@ namespace Business.Repositories.CustomerRepository
 
         public async Task<IResult> Delete(Customer customer)
         {
+            IResult result = BusinessRules.Run(await CheckIfCustomerOrderExists(customer.Id));
+            var customerRelationship = await _customerRelationshipService.GetByCustomerId(customer.Id);
+
+            if (result != null)
+            {
+                return result;
+            }
             await _customerDal.Delete(customer);
             return new SuccessResult(CustomerMessages.Deleted);
         }
@@ -91,6 +104,16 @@ namespace Business.Repositories.CustomerRepository
             if (list != null)
             {
                 return new ErrorResult("Bu mail adresi daha önce kullanýlmýþ");
+            }
+            return new SuccessResult();
+        }
+        private async Task<IResult> CheckIfCustomerOrderExists(int customerId)
+        {
+
+            var list = await _orderService.GetListByCustomerId(customerId);
+            if (list.Data.Count > 0)
+            {
+                return new ErrorResult("Sipariþi bulunan müþteri kaydý silinemez!");
             }
             return new SuccessResult();
         }

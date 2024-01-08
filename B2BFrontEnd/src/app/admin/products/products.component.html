@@ -62,10 +62,10 @@
                         | productPipe:filterText 
                         let index = index">
                             <td [innerText]="index+1"></td>
-                            <td [innerText]="product.name"></td>
+                            <td><a routerLink="/admin/products/{{product.id}}/product-image" class="text-primary" [innerText]="product.name"></a></td>
                             <td>
                                 <img
-                                    [src]="product.mainImageUrl=='' ?  '../../../assets/img/noimage.jpg':product.mainImageUrl">
+                                    [src]="product.mainImageUrl=='' ?  '../../../assets/img/noimage.jpg': '../../../assets/img/'+product.mainImageUrl">
                             </td>
                             <td>
                                 <button class="btn btn-danger" [swal]="deleteSwal"

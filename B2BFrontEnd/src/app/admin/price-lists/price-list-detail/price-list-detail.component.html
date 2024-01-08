@@ -1,0 +1,117 @@
+<div class="content-wrapper">
+    <!-- Content Header (Page header) -->
+    <section class="content-header">
+        <div class="container-fluid">
+            <div class="row mb-2">
+                <div class="col-sm-6">
+                    <h1>Fiyat Listesi Detayı</h1>
+                </div>
+                <div class="col-sm-6">
+                    <ol class="breadcrumb float-sm-right">
+                        <li class="breadcrumb-item"><a routerLink="/admin" routerLinkActive="active"
+                                [routerLinkActiveOptions]="{exact:true}">Ana sayfa</a></li>
+                        <li class="breadcrumb-item"><a routerLink="/admin/price-lists" routerLinkActive="active"
+                                [routerLinkActiveOptions]="{exact:true}">Fiyat listeleri</a></li>
+                        <li class="breadcrumb-item active">Fiyat Listesi Detayı</li>
+                    </ol>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="content">
+        <div class="card">
+            <div class="card-header">
+                <h3 class="card-title">Fiyat Listesi Detayı</h3>
+
+                <div class="card-tools">
+                    <button type="button" class="btn btn-tool" data-card-widget="collapse" title="Collapse">
+                        <i class="fas fa-minus"></i>
+                    </button>
+                    <button type="button" class="btn btn-tool" data-card-widget="remove" title="Remove">
+                        <i class="fas fa-times"></i>
+                    </button>
+                </div>
+            </div>
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="btn-group">
+                            <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#AddModal">Ürün
+                                Ekle</button>
+                            <button (click)="exportExcel()" class="btn btn-success">Excel'e aktar</button>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group offset-9" data-widget="sidebar-search">
+                            <input class="form-control" type="search" placeholder="Aranacak kelime"
+                                [(ngModel)]="filterText" [ngModelOptions]="{standalone:true}" aria-label="Search">
+                        </div>
+                    </div>
+                </div>
+                <table id="excel-table" class="table table-hover">
+                    <thead>
+                        <tr>
+                            <th>#</th>
+                            <th>Ürün Adı</th>
+                            <th>Ürün Fiyatı</th>
+                            <th>İşlemler</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr *ngFor="let pricelistdetail of pricelists
+                        | priceListDetailPipe:filterText 
+                        let index = index">
+                            <td [innerText]="index+1"></td>
+                            <td [innerText]="pricelistdetail.productName"></td>
+                            <td>
+                                <input type="text" autocomplete="off" [(ngModel)]="pricelistdetail.price" [ngModelOptions]="{standalone:true}">
+                            </td>
+                            <td>
+                                <button class="btn btn-danger" [swal]="deleteSwal"
+                                    (confirm)="delete(pricelistdetail)">Sil</button>
+                                <button class="btn btn-success" (click)="update(pricelistdetail)">
+                                    Güncelle</button>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+        </div>
+    </section>
+</div>
+
+<div class="modal fade" id="AddModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Fiyat Listesi Ekle</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form #addForm="ngForm">
+                    <div class="form-group">
+                        <label for="Name">Ürün Adı</label>
+                        <select class="form-control" ngModel name="productId" #productId required>
+                            <option *ngFor="let product of products" [value]="product.id" [innerText]="product.name"></option>
+                        </select>
+                        <div class="form-group">
+                            <label for="productName">Fiyatı</label>
+                            <input type="text" autocomplete="off" ngModel #price name="price" required min="3"
+                                class="form-control" placeholder="Ürün fiyatı giriniz" />
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary" [disabled]="!addForm.valid" (click)="add(addForm)">Ürün
+                    Ekle</button>
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Kapat</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<swal #deleteSwal title="Sil?" text="Ürün fiyatını silmek istiyor musunuz?" type="question" [showCancelButton]="true"
+    [focusCancel]="true" [swalOptions]="{confirmButtonText:'Sil',cancelButtonText:'Vazgeç'}"></swal>

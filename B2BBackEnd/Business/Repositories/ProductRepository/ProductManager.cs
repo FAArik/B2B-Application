@@ -34,7 +34,7 @@ public class ProductManager : IProductService
         _orderDetailService = orderDetailService;
     }
 
-    //[SecuredAspect("admin,product.add")]
+    [SecuredAspect("admin,product.add")]
     [ValidationAspect(typeof(ProductValidator))]
     [RemoveCacheAspect("IProductService.Get")]
 
@@ -54,7 +54,7 @@ public class ProductManager : IProductService
         return new SuccessResult(ProductMessages.Updated);
     }
 
-    //[SecuredAspect("admin,prodcut.delete")]
+    [SecuredAspect("admin,prodcut.delete")]
     [RemoveCacheAspect("IProductService.Get")]
 
     public async Task<IResult> Delete(Product product)
@@ -70,7 +70,7 @@ public class ProductManager : IProductService
         }
 
         var images = await _productImageService.GetListByProductId(product.Id);
-        foreach (var image in images)
+        foreach (var image in images.Data)
         {
             await _productImageService.Delete(image);
         }
@@ -86,10 +86,9 @@ public class ProductManager : IProductService
     }
 
     [SecuredAspect("admin,prodcut.get")]
-    [CacheAspect()]
     [PerformanceAspect()]
     public async Task<IDataResult<List<ProductListDto>>> GetList()
-     {
+    {
         return new SuccessDataResult<List<ProductListDto>>(await _productDal.GetListDto());
     }
 
@@ -99,8 +98,7 @@ public class ProductManager : IProductService
         return new SuccessDataResult<Product>(await _productDal.Get(p => p.Id == id));
     }
 
-    //[SecuredAspect("admin,prodcut.get")]
-    [CacheAspect()]
+    [SecuredAspect("admin,prodcut.get")]
     [PerformanceAspect()]
     public async Task<IDataResult<List<ProductListDto>>> GetProductList(int customerId)
     {
