@@ -34,7 +34,7 @@ export class AuthService {
       console.log(this.adminToken);
 
       localStorage.setItem("adminToken", this.adminToken.adminAccessToken);
-      this.router.navigateByUrl("/admin");
+      this.router.navigateByUrl("/");
       this.toastr.success("Giriş başarılı")
     }, (err) => {
       this.errorService.errorHandler(err)

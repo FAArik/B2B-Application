@@ -7,6 +7,7 @@ import { AppComponent } from './app.component';
 import { ToastrModule } from 'ngx-toastr';
 import { AuthInterceptor } from './admin/login/interceptor/auth.interceptor';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { UiModule } from './ui/ui.module';
 
 @NgModule({
   declarations: [
@@ -22,7 +23,8 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
       closeButton: true,
       progressBar: true
     }),
-    BrowserAnimationsModule
+    BrowserAnimationsModule,
+    UiModule
   ],
   providers: [
     { provide: 'apiUrl', useValue: 'https://localhost:7146/api/' },

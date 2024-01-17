@@ -8,8 +8,8 @@
                 </div>
                 <div class="col-sm-6">
                     <ol class="breadcrumb float-sm-right">
-                        <li class="breadcrumb-item"><a routerLink="/admin" routerLinkActive="active"
-                                [routerLinkActiveOptions]="{exact:true}">Ana sayfa</a></li>
+                        <li class="breadcrumb-item"><a routerLink="/" routerLinkActive="active"
+                                [routerLinkActiveOptions]="{exact:true}">Siparişler</a></li>
                         <li class="breadcrumb-item active">Müşteriler</li>
                     </ol>
                 </div>
@@ -53,6 +53,8 @@
                             <th>#</th>
                             <th>Müşteri Adı</th>
                             <th>Mail Adresi</th>
+                            <th>Fiyat Listesi</th>
+                            <th>İskonto Oranı</th>
                             <th>İşlemler</th>
                         </tr>
                     </thead>
@@ -63,12 +65,24 @@
                             <td [innerText]="index+1"></td>
                             <td [innerText]="customer.name"></td>
                             <td [innerText]="customer.email"></td>
+                            <td [innerText]="customer.priceListName"></td>
+                            <td [innerText]="customer.discount"></td>
                             <td>
-                                <button class="btn btn-danger" [swal]="deleteSwal"
-                                    (confirm)="delete(customer)">Sil</button>
-                                <!-- <button class="btn btn-success" (click)="getcustomerList(customer)" data-bs-toggle="modal"
-                                    data-bs-target="#EditModal">Fiyat Listesini
-                                    Güncelle</button> -->
+                                <div class="btn-group">
+                                    <button class="btn btn-warning" (click)="getCustomer(customer)"
+                                        data-bs-toggle="modal" data-bs-target="#EditRelationshipModal">Bağlantı
+                                        ayarla</button>
+                                    <button class="btn btn-info" (click)="getCustomer(customer)"
+                                        data-bs-toggle="modal" data-bs-target="#EditModal">Müşteri
+                                        Güncelle</button>
+                                    <button class="btn btn-success" (click)="getCustomer(customer)"
+                                        data-bs-toggle="modal" data-bs-target="#EditPasswordModal">Müşteri Şifre
+                                        Güncelle</button>
+
+                                    <button class="btn btn-danger" [swal]="deleteSwal"
+                                        (confirm)="delete(customer)">Sil</button>
+
+                                </div>
                             </td>
                         </tr>
                     </tbody>
@@ -80,25 +94,31 @@
 </div>
 
 <div class="modal fade" id="EditModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-    <div class="modal-dialog">
+    <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLabel">Fiyat Listesi güncelle</h5>
+                <h5 class="modal-title" id="exampleModalLabel">Müşteri güncelle</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
                 <form #updateForm="ngForm">
                     <div class="form-group">
-                        <label for="productName">Fiyat listesi Adı</label>
-                        <input type="text" autocomplete="off" [(ngModel)]="updcustomer.name" #updpricelistName
-                            [ngModelOptions]="{standalone:true}" name="updpricelistName" required minlength="3"
-                            class="form-control" placeholder="Ürün adı giriniz" />
+                        <label for="Name">Müşteri Adı</label>
+                        <input type="text" autocomplete="off" [(ngModel)]="updcustomer.name"
+                            [ngModelOptions]="{standalone:true}" name="name" id="name" #name required minlength="3"
+                            class="form-control" placeholder="Müşteri adı giriniz" />
+                    </div>
+                    <div class="form-group">
+                        <label for="Name">Mail adresi</label>
+                        <input type="email" autocomplete="off" [(ngModel)]="updcustomer.email"
+                            [ngModelOptions]="{standalone:true}" name="email" id="email" #email required email
+                            minlength="3" class="form-control" placeholder="E-posta adresi giriniz" />
                     </div>
                 </form>
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-warning" [disabled]="!updateForm.form.valid"
-                    (click)="update()">Fiyat Listesi
+                    (click)="update()">Müşteri
                     Güncelle</button>
                 <button type="button" id="EditModalCloseBtn" class="btn btn-secondary"
                     data-bs-dismiss="modal">Kapat</button>
@@ -106,9 +126,34 @@
         </div>
     </div>
 </div>
-
+<div class="modal fade" id="EditPasswordModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Müşteri güncelle</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form #updateForm="ngForm">
+                    <div class="form-group">
+                        <label for="Password">Şifre</label>
+                        <input type="text" autocomplete="off" name="Password" id="Password " #password required
+                            minlength="3" class="form-control" />
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-warning" [disabled]="!updateForm.form.valid"
+                    (click)="changePassword(password)">Müşteri Şifre
+                    Güncelle</button>
+                <button type="button" id="EditPasswordModalCloseBtn" class="btn btn-secondary"
+                    data-bs-dismiss="modal">Kapat</button>
+            </div>
+        </div>
+    </div>
+</div>
 <div class="modal fade" id="AddModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-    <div class="modal-dialog">
+    <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title" id="exampleModalLabel">Müşteri Ekle</h5>
@@ -137,6 +182,40 @@
                 <button type="button" class="btn btn-primary" [disabled]="!addForm.valid" (click)="add(addForm)">Müşteri
                     Ekle</button>
                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Kapat</button>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal fade" id="EditRelationshipModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Müşteri bağlantı güncelle</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form #updateForm="ngForm">
+                    <div class="form-group">
+                        <label for="Password">Fiyat Listesi</label>
+                        <select class="form-control" [(ngModel)]="updcustomer.priceListId"
+                            [ngModelOptions]="{standalone:true}" name="priceListId" #priceListId required>
+                            <option *ngFor="let priceList of priceLists" [value]="priceList.id"
+                                [innerText]="priceList.name"></option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="discount">İskonto</label>
+                        <input type="text" autocomplete="off" class="form-control" [(ngModel)]="updcustomer.discount"
+                            [ngModelOptions]="{standalone:true}" name="discount" id="discount" #discount required />
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-warning" [disabled]="!updateForm.form.valid"
+                    (click)="updateRelationShip()">Müşteri Bağlantı
+                    Güncelle</button>
+                <button type="button" id="EditRelationshipModalCloseBtn" class="btn btn-secondary"
+                    data-bs-dismiss="modal">Kapat</button>
             </div>
         </div>
     </div>

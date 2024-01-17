@@ -8,8 +8,8 @@
                 </div>
                 <div class="col-sm-6">
                     <ol class="breadcrumb float-sm-right">
-                        <li class="breadcrumb-item"><a routerLink="/admin" routerLinkActive="active"
-                                [routerLinkActiveOptions]="{exact:true}">Ana sayfa</a></li>
+                        <li class="breadcrumb-item"><a routerLink="/" routerLinkActive="active"
+                            [routerLinkActiveOptions]="{exact:true}">Siparişler</a></li>
                         <li class="breadcrumb-item active">Ürünler sayfası</li>
                     </ol>
                 </div>
@@ -62,7 +62,7 @@
                         | productPipe:filterText 
                         let index = index">
                             <td [innerText]="index+1"></td>
-                            <td><a routerLink="/admin/products/{{product.id}}/product-image" class="text-primary" [innerText]="product.name"></a></td>
+                            <td><a routerLink="/products/{{product.id}}/product-image" class="text-primary" [innerText]="product.name"></a></td>
                             <td>
                                 <img
                                     [src]="product.mainImageUrl=='' ?  '../../../assets/img/noimage.jpg': '../../../assets/img/'+product.mainImageUrl">

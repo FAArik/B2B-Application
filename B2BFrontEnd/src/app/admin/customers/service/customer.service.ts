@@ -1,6 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Inject, Injectable } from '@angular/core';
 import { CustomerModel } from '../model/customer.model';
+import { CustomerRelationship } from '../model/customer-relationship.model';
 
 @Injectable({
   providedIn: 'root'
@@ -13,6 +14,10 @@ export class CustomerService {
   ) { }
   getById(id: number) {
     let api = this.apiUrl + "customers/getbyid/" + id
+    return this.http.get(api);
+  }
+  getDtoById(id: number) {
+    let api = this.apiUrl + "customers/getdtobyid/" + id
     return this.http.get(api);
   }
   getList() {
@@ -31,5 +36,12 @@ export class CustomerService {
     let api = this.apiUrl + "customers/update"
     return this.http.post(api, customer);
   }
-  
+  updateRelationship(customerRelationship: CustomerRelationship) {
+    let api = this.apiUrl + "customerRelationships/update"
+    return this.http.post(api, customerRelationship);
+  }
+  changePasswordByAdminPanel(customer: CustomerModel) { 
+    let api = this.apiUrl + "customers/ChangePasswordByAdminPanel"
+    return this.http.post(api, customer);
+  }
 }

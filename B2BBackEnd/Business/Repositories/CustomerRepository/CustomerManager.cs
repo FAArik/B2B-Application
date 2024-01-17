@@ -62,6 +62,20 @@ namespace Business.Repositories.CustomerRepository
             await _customerDal.Update(customer);
             return new SuccessResult(CustomerMessages.Updated);
         }
+        [SecuredAspect()]
+        [ValidationAspect(typeof(CustomerValidator))]
+        [RemoveCacheAspect("ICustomerService.Get")]
+
+        public async Task<IResult> ChangePasswordByAdminPanel(CustomerChangePasswordByAdminPanelDto customerdto)
+        {
+            byte[] passwordHash, passwordSalt;
+            HashingHelper.CreatePassword(customerdto.Password, out passwordHash, out passwordSalt);
+            var customer = await _customerDal.Get(x => x.Id == customerdto.Id);
+            customer.PasswordSalt = passwordSalt;
+            customer.PasswordHash = passwordHash;
+            await _customerDal.Update(customer);
+            return new SuccessResult(CustomerMessages.ChangedPassword);
+        }
 
         [SecuredAspect()]
         [RemoveCacheAspect("ICustomerService.Get")]
@@ -82,15 +96,20 @@ namespace Business.Repositories.CustomerRepository
         [SecuredAspect()]
         [CacheAspect()]
         [PerformanceAspect()]
-        public async Task<IDataResult<List<Customer>>> GetList()
+        public async Task<IDataResult<List<CustomerDto>>> GetList()
         {
-            return new SuccessDataResult<List<Customer>>(await _customerDal.GetAll());
+            return new SuccessDataResult<List<CustomerDto>>(await _customerDal.GetlistDto());
         }
 
         [SecuredAspect()]
         public async Task<IDataResult<Customer>> GetById(int id)
         {
             return new SuccessDataResult<Customer>(await _customerDal.Get(p => p.Id == id));
+        }
+        [SecuredAspect()]
+        public async Task<IDataResult<CustomerDto>> GetDtoById(int id)
+        {
+            return new SuccessDataResult<CustomerDto>(await _customerDal.GetDto(id));
         }
 
         public async Task<Customer> GetByEmail(string email)

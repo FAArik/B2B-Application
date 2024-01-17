@@ -1,31 +1,31 @@
-import { FooterModule } from './footer/footer.module';
 import { AsideModule } from './aside/aside.module';
 import { NavbarModule } from './navbar/navbar.module';
 import { Routes, RouterModule } from '@angular/router';
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { LayoutsComponent } from './layouts.component';
+import { AdminLayoutsComponent } from './layouts.component';
+import { FooterComponent } from './footer/footer.component';
 
 
 const routes: Routes = [
   {
-    path: '', component: LayoutsComponent
+    path: '', component: AdminLayoutsComponent
   }
 ]
 
 @NgModule({
   declarations: [
-    LayoutsComponent
+    AdminLayoutsComponent,
+    FooterComponent
   ],
   imports: [
     CommonModule,
     RouterModule.forChild(routes),
     NavbarModule,
-    AsideModule,
-     FooterModule
+    AsideModule
   ],
   exports: [
-    LayoutsComponent
+    AdminLayoutsComponent
   ]
 })
 export class LayoutsModule { }

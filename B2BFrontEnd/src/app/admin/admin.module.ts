@@ -1,12 +1,12 @@
-import { LoginModule } from './login/login.module';
+import { AdminLoginModule } from './login/login.module';
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { LayoutsModule } from './layouts/layouts.module';
-import { HomeModule } from './home/home.module';
 import { ProductsModule } from './products/products.module';
 import { PriceListsModule } from './price-lists/price-lists.module';
-import { CustomersComponent } from './customers/customers.component';
 import { CustomersModule } from './customers/customers.module';
+import { OrdersModule } from './orders/orders.module';
+import { ProfileModule } from './profile/profile.module';
 
 
 
@@ -14,18 +14,22 @@ import { CustomersModule } from './customers/customers.module';
   declarations: [],
   imports: [
     CommonModule,
-    HomeModule,
     LayoutsModule,
-    LoginModule,
+    AdminLoginModule,
     ProductsModule,
     PriceListsModule,
-    CustomersModule
+    CustomersModule,
+    OrdersModule,
+    ProfileModule
   ],
   exports: [
-    HomeModule,
     LayoutsModule,
-    LoginModule,
-    PriceListsModule
+    AdminLoginModule,
+    ProductsModule,
+    PriceListsModule,
+    CustomersModule,
+    OrdersModule,
+    ProfileModule
   ]
 })
 export class AdminModule { }

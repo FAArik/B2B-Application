@@ -1,16 +1,9 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Core.DataAccess.EntityFramework;
-using Entities.Concrete;
-using DataAccess.Repositories.CustomerRelationshipRepository;
 using DataAccess.Context.EntityFramework;
+using Entities.Concrete;
 
-namespace DataAccess.Repositories.CustomerRelationshipRepository
+namespace DataAccess.Repositories.CustomerRelationshipRepository;
+
+public class EfCustomerRelationshipDal : EfEntityRepositoryBase<CustomerRelationship, SimpleContextDb>, ICustomerRelationshipDal
 {
-    public class EfCustomerRelationshipDal : EfEntityRepositoryBase<CustomerRelationship, SimpleContextDb>, ICustomerRelationshipDal
-    {
-    }
 }

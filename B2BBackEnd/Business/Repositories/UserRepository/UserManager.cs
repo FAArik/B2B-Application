@@ -89,6 +89,30 @@ namespace Business.Repositories.UserRepository
             await _userDal.Update(user);
             return new SuccessResult(UserMessages.UpdatedUser);
         }
+        [SecuredAspect()]
+        [ValidationAspect(typeof(UserValidator))]
+        [RemoveCacheAspect("IUserService.Get")]
+        public async Task<IResult> UpdateUserByAdminPanel(UserDto user)
+        {
+            var userEntity = await _userDal.Get(p => p.Id == user.Id);
+            var result = HashingHelper.VerifyPasswordHash(user.Password, userEntity.PasswordHash, userEntity.PasswordSalt);
+            if (result == true)
+            {
+                if (user.NewPassword != "")
+                {
+                    byte[] passwordHash, passwordSalt;
+                    HashingHelper.CreatePassword(user.NewPassword, out passwordHash, out passwordSalt);
+                    userEntity.PasswordHash = passwordHash;
+                    userEntity.PasswordSalt = passwordSalt;
+
+                }
+                userEntity.Name = user.Name;
+                await _userDal.Update(userEntity);
+                return new SuccessResult(UserMessages.UpdatedUser);
+            }
+            return new ErrorResult("Şifreniz mevcut şifreniz ile uyuşmuyor!");
+
+        }
 
         [SecuredAspect()]
         [RemoveCacheAspect("IUserService.Get")]

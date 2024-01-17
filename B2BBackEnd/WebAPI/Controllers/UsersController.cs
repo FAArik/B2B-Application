@@ -49,6 +49,16 @@ namespace WebAPI.Controllers
             }
             return BadRequest(result.Message);
         }
+        [HttpPost("[action]")]
+        public async Task<IActionResult> UpdateUserByAdminPanel(UserDto user)
+        {
+            var result = await _userService.UpdateUserByAdminPanel(user);
+            if (result.Success)
+            {
+                return Ok(result);
+            }
+            return BadRequest(result.Message);
+        }
 
         [HttpPost("[action]")]
         public async Task<IActionResult> Delete(User user)

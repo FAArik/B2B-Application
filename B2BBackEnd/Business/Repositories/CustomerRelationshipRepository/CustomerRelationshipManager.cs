@@ -26,9 +26,10 @@ namespace Business.Repositories.CustomerRelationshipRepository
             _customerRelationshipDal = customerRelationshipDal;
         }
 
-        //[SecuredAspect()]
+        [SecuredAspect()]
         [ValidationAspect(typeof(CustomerRelationshipValidator))]
         [RemoveCacheAspect("ICustomerRelationshipService.Get")]
+        [RemoveCacheAspect("ICustomerService.Get")]
 
         public async Task<IResult> Add(CustomerRelationship customerRelationship)
         {
@@ -42,7 +43,17 @@ namespace Business.Repositories.CustomerRelationshipRepository
 
         public async Task<IResult> Update(CustomerRelationship customerRelationship)
         {
-            await _customerRelationshipDal.Update(customerRelationship);
+            var result = await _customerRelationshipDal.Get(x=>x.CustomerId==customerRelationship.CustomerId);
+            if (result!=null)
+            {
+                customerRelationship.Id = result.Id;
+                await _customerRelationshipDal.Update(customerRelationship);
+            }
+            else
+            {
+                await _customerRelationshipDal.Add(customerRelationship);
+                
+            }
             return new SuccessResult(CustomerRelationshipMessages.Updated);
         }
 

@@ -10,6 +10,7 @@ using Core.Utilities.Result.Abstract;
 using Core.Utilities.Result.Concrete;
 using DataAccess.Repositories.OrderRepository;
 using Entities.Concrete;
+using Entities.Dtos;
 
 namespace Business.Repositories.OrderRepository
 {
@@ -26,7 +27,7 @@ namespace Business.Repositories.OrderRepository
             _orderDetailService = orderDetailService;
         }
 
-        //[SecuredAspect()]
+        [SecuredAspect()]
         [ValidationAspect(typeof(OrderValidator))]
         [RemoveCacheAspect("IOrderService.Get")]
 
@@ -79,7 +80,7 @@ namespace Business.Repositories.OrderRepository
             return new SuccessResult(OrderMessages.Updated);
         }
 
-        //[SecuredAspect()]
+        [SecuredAspect()]
         [RemoveCacheAspect("IOrderService.Get")]
 
         public async Task<IResult> Delete(Order order)
@@ -93,7 +94,7 @@ namespace Business.Repositories.OrderRepository
             return new SuccessResult(OrderMessages.Deleted);
         }
 
-        //[SecuredAspect()]
+        [SecuredAspect()]
         [CacheAspect()]
         [PerformanceAspect()]
         public async Task<IDataResult<List<Order>>> GetList()
@@ -101,12 +102,27 @@ namespace Business.Repositories.OrderRepository
             return new SuccessDataResult<List<Order>>(await _orderDal.GetAll());
         }
 
+        [CacheAspect()]
+        [PerformanceAspect()]
+        public async Task<IDataResult<List<OrderDto>>> GetListDto()
+        {
+            return new SuccessDataResult<List<OrderDto>>(await _orderDal.GetListDto());
+        }
+
         [SecuredAspect()]
+        [CacheAspect()]
         public async Task<IDataResult<Order>> GetById(int id)
         {
             return new SuccessDataResult<Order>(await _orderDal.Get(p => p.Id == id));
         }
-
+        [SecuredAspect()]
+        [CacheAspect()]
+        public async Task<IDataResult<OrderDto>> GetByIdDto(int id)
+        {
+            return new SuccessDataResult<OrderDto>(await _orderDal.GetByIdDto(id));
+        }
+        [SecuredAspect()]
+        [CacheAspect()]
         public async Task<IDataResult<List<Order>>> GetListByCustomerId(int customerId)
         {
             return new SuccessDataResult<List<Order>>(await _orderDal.GetAll(p => p.CustomerId == customerId));

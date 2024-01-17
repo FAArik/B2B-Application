@@ -1,4 +1,4 @@
- using Business.Repositories.CustomerRepository;
+using Business.Repositories.CustomerRepository;
 using Entities.Concrete;
 using Entities.Dtos;
 using Microsoft.AspNetCore.Mvc;
@@ -37,6 +37,16 @@ namespace WebApi.Controllers
             }
             return BadRequest(result.Message);
         }
+        [HttpPost("[action]")]
+        public async Task<IActionResult> ChangePasswordByAdminPanel(CustomerChangePasswordByAdminPanelDto customerdto)
+        {
+            var result = await _customerService.ChangePasswordByAdminPanel(customerdto);
+            if (result.Success)
+            {
+                return Ok(result);
+            }
+            return BadRequest(result.Message);
+        }
 
         [HttpPost("[action]")]
         public async Task<IActionResult> Delete(Customer customer)
@@ -64,6 +74,16 @@ namespace WebApi.Controllers
         public async Task<IActionResult> GetById(int id)
         {
             var result = await _customerService.GetById(id);
+            if (result.Success)
+            {
+                return Ok(result);
+            }
+            return BadRequest(result.Message);
+        }
+        [HttpGet("[action]/{id}")]
+        public async Task<IActionResult> GetDtoById(int id)
+        {
+            var result = await _customerService.GetDtoById(id);
             if (result.Success)
             {
                 return Ok(result);
