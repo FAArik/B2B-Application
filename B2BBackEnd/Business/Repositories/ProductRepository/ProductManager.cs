@@ -98,7 +98,7 @@ public class ProductManager : IProductService
         return new SuccessDataResult<Product>(await _productDal.Get(p => p.Id == id));
     }
 
-    [SecuredAspect("admin,prodcut.get")]
+    //[SecuredAspect("admin,prodcut.get")]
     [PerformanceAspect()]
     public async Task<IDataResult<List<ProductListDto>>> GetProductList(int customerId)
     {

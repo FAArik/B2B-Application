@@ -55,6 +55,8 @@ export class ProductImageComponent implements OnInit {
 
   getImages(event: any) {
     this.fileimages = event.target.files;
+    console.log(event);
+    
 
   }
 

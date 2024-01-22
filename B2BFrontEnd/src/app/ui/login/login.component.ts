@@ -1,3 +1,5 @@
+import { NgForm } from '@angular/forms';
+import { UiauthService } from './service/uiauth.service';
 import { Component, OnInit } from '@angular/core';
 
 @Component({
@@ -7,13 +9,13 @@ import { Component, OnInit } from '@angular/core';
 })
 export class LoginComponent implements OnInit {
 
-  constructor() { }
+  constructor(private uiAuth: UiauthService) { }
 
   ngOnInit(): void {
   }
 
-  login(loginForm: any){
-
+  login(loginForm: NgForm) {
+    this.uiAuth.login(loginForm);
   }
 
 }

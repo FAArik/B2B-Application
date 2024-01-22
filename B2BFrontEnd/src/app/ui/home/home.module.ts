@@ -3,22 +3,26 @@ import { CommonModule } from '@angular/common';
 import { HomeComponent } from './home.component';
 import { RouterModule, Routes } from '@angular/router';
 import { DetailModule } from './detail/detail.module';
+import { ProductPipe } from './pipe/product.pipe';
+import { FormsModule } from '@angular/forms';
 
-const routes: Routes=[
+const routes: Routes = [
   {
     path: '',
-    component : HomeComponent
+    component: HomeComponent
   }
 ]
 
 @NgModule({
   declarations: [
-    HomeComponent
+    HomeComponent,
+    ProductPipe
   ],
   imports: [
     CommonModule,
     RouterModule.forChild(routes),
-    DetailModule
+    DetailModule,
+    FormsModule
   ],
   exports: [
     HomeComponent,

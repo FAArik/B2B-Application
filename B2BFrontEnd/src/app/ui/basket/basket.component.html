@@ -4,51 +4,48 @@
       <h2>Ürün Detayları</h2>
     </div><!--/.section-header-->
     <div class="feature-content">
-                <div class="form-group">
-                <table class="table">
-                    <thead>
-                    <tr>
-                        <th>#</th>
-                        <th>Ürün Adı</th>
-                        <th>Adet</th>
-                        <th>Birim Fiyat</th>
-                        <th>Toplam</th>
-                        <th>İşlemler</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td>1</td>
-                        <td>Koltuk Takımı</td>
-                        <td>10</td>
-                        <td>100</td>
-                        <td>1000</td>
-                        <td>
-                          <button class="btn btn-danger" [swal]="deleteSwal">Sil</button>
-                        </td>
-                    </tr>
-                </tbody>
-                </table>
-            </div>
-            <hr>
-            <div class="form-group">
-                <div class="text-center">
-                    <h4>Toplam Tutar: </h4> 1000
-                    <button class="btn btn-primary btn-block">Sipariş Oluştur</button>
+      <div class="form-group">
+        <table class="table">
+          <thead>
+            <tr>
+              <th>#</th>
+              <th>Ürün Adı</th>
+              <th>Adet</th>
+              <th>Birim Fiyat</th>
+              <th>Toplam</th>
+              <th>İşlemler</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let basket of baskets let index=index">
+              <td [innerText]="index+1"></td>
+              <td [innerText]="basket.productName"></td>
+              <td [innerText]="basket.quantity"></td>
+              <td [innerText]="basket.price | currency:'TRY':'symbol-narrow':'1.2-2'"></td>
+              <td [innerText]="basket.total | currency:'TRY':'symbol-narrow':'1.2-2'"></td>
+              <td>
+                <div class="btn-group">
+                  <button type="button"></button>
                 </div>
-            </div>
+              </td>
+              <td>
+                <button class="btn btn-danger" [swal]="deleteSwal">Sil</button>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <hr>
+      <div class="form-group">
+        <div class="text-center">
+          <h4>Toplam Tutar: </h4> 1000
+        </div>
+      </div>
     </div>
   </div><!--/.container-->
 
 </section>
 
 
-<swal
-  #deleteSwal
-  title="Sil?"
-  text="Ürünü sepetten silmek istiyor musunuz?"
-  type="question"
-  [showCancelButton]="true"
-  [focusCancel]="true"
-  [swalOptions]="{ confirmButtonText: 'Sil', cancelButtonText: 'Vazgeç' }"
-  ></swal>
+<swal #deleteSwal title="Sil?" text="Ürünü sepetten silmek istiyor musunuz?" type="question" [showCancelButton]="true"
+  [focusCancel]="true" [swalOptions]="{ confirmButtonText: 'Sil', cancelButtonText: 'Vazgeç' }"></swal>

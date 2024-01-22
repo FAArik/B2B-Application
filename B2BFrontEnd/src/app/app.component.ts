@@ -1,25 +1,24 @@
 import { DOCUMENT } from '@angular/common';
 import { Component, Inject, OnInit } from '@angular/core';
-import { ActivatedRoute, Router, UrlTree } from '@angular/router';
+import { ActivatedRoute, ActivatedRouteSnapshot, Router, UrlTree } from '@angular/router';
 
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.scss']
 })
-export class AppComponent implements OnInit{
+export class AppComponent implements OnInit {
   title = 'B2BFrontEnd';
   styleName: string;
 
-  constructor(@Inject(DOCUMENT) private document: Document,private router: Router) {}
+  constructor(@Inject(DOCUMENT) private document: Document, private router: Router,private activated:ActivatedRoute) { }
+
   ngOnInit(): void {
-    console.log(this.router);
-    
-    if(this.router.url.startsWith('/'))
-      this.loadStyle("./admin.css")
-    else
+    if (window.location.href.includes("/ui"))
       this.loadStyle("./ui.css")
-      
+    else
+      this.loadStyle("./admin.css")
+
 
   }
   loadStyle(styleName: string) {
@@ -28,7 +27,7 @@ export class AppComponent implements OnInit{
     let themeLink = this.document.getElementById(
       'client-theme'
     ) as HTMLLinkElement;
-    
+
     if (themeLink) {
       themeLink.href = styleName;
     } else {
@@ -36,7 +35,6 @@ export class AppComponent implements OnInit{
       style.id = 'client-theme';
       style.rel = 'stylesheet';
       style.href = `${styleName}`;
-      console.log(style);
       head.appendChild(style);
     }
   }

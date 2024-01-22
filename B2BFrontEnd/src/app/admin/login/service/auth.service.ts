@@ -28,11 +28,7 @@ export class AuthService {
   login(adminLoginModel: AdminloginModel) {
     let api = this.apiUrl + "auth/userlogin";
     this.http.post(api, adminLoginModel).subscribe((res: any) => {
-      console.log(res);
-
       this.adminToken = res.data;
-      console.log(this.adminToken);
-
       localStorage.setItem("adminToken", this.adminToken.adminAccessToken);
       this.router.navigateByUrl("/");
       this.toastr.success("Giriş başarılı")

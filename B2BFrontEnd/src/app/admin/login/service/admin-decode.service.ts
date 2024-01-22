@@ -7,7 +7,7 @@ import { AdminRoleModel } from '../models/adminRole.model';
 })
 export class AdminDecodeService {
 
-  jwtHelper: JwtHelperService=new JwtHelperService();
+  jwtHelper: JwtHelperService = new JwtHelperService();
   roles: AdminRoleModel[] = [];
   constructor() { }
 
@@ -22,6 +22,7 @@ export class AdminDecodeService {
     var userName = Object.keys(decode).filter(p => p.endsWith("/name"))[0];
     return decode[userName];
   }
+
   getUserRoles() {
     this.roles = [];
     let decode = this.jwtHelper.decodeToken(localStorage.getItem("adminToken"))
@@ -34,5 +35,19 @@ export class AdminDecodeService {
 
     return this.roles;
   };
+  getCustomerId(): number {
+    if(localStorage.getItem("token")){
+      let decode = this.jwtHelper.decodeToken(localStorage.getItem("token"))
+      var userId = Object.keys(decode).filter(p => p.endsWith("/nameidentifier"))[0];
+      return +decode[userId];
+    }
+    return 0;
+  }
+  
+  getCustomerName(): string {
+    let decode = this.jwtHelper.decodeToken(localStorage.getItem("token"))
+    var userName = Object.keys(decode).filter(p => p.endsWith("/name"))[0];
+    return decode[userName];
+  }
 }
 
