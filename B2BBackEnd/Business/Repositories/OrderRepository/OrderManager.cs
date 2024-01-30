@@ -123,9 +123,9 @@ namespace Business.Repositories.OrderRepository
         }
         [SecuredAspect()]
         [CacheAspect()]
-        public async Task<IDataResult<List<Order>>> GetListByCustomerId(int customerId)
+        public async Task<IDataResult<List<OrderDto>>> GetListByCustomerIdDto(int customerId)
         {
-            return new SuccessDataResult<List<Order>>(await _orderDal.GetAll(p => p.CustomerId == customerId));
+            return new SuccessDataResult<List<OrderDto>>(await _orderDal.GetListByCustomerIdDto(customerId));
         }
     }
 }

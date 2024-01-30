@@ -129,7 +129,7 @@ namespace Business.Repositories.CustomerRepository
         private async Task<IResult> CheckIfCustomerOrderExists(int customerId)
         {
 
-            var list = await _orderService.GetListByCustomerId(customerId);
+            var list = await _orderService.GetListByCustomerIdDto(customerId);
             if (list.Data.Count > 0)
             {
                 return new ErrorResult("Sipariþi bulunan müþteri kaydý silinemez!");

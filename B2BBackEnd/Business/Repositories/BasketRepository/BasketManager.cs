@@ -16,18 +16,34 @@ namespace Business.Repositories.BasketRepository
     {
         private readonly IBasketDal _basketDal;
 
+
         public BasketManager(IBasketDal basketDal)
         {
             _basketDal = basketDal;
         }
 
-        //[SecuredAspect()]
+        [SecuredAspect()]
         [ValidationAspect(typeof(BasketValidator))]
         [RemoveCacheAspect("IBasketService.Get")]
 
         public async Task<IResult> Add(Basket basket)
         {
-            await _basketDal.Add(basket);
+            var list =(await _basketDal.GetListByCustomerId(basket.CustomerId)).Find(x => x.ProductId == basket.ProductId && x.Price == basket.Price);
+            if (list == null)
+                await _basketDal.Add(basket);
+            else
+            {            
+                Basket updbasket = new()
+                {
+                    Id=list.Id,
+                    CustomerId=list.CustomerId,
+                    ProductId=list.ProductId,
+                    Price=list.Price + basket.Price,
+                    Quantity= list.Quantity + basket.Quantity
+                };
+                await _basketDal.Update(updbasket);
+            }
+
             return new SuccessResult(BasketMessages.Added);
         }
 
