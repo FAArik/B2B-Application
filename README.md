@@ -1,8 +1,5 @@
 # Simple Architecture ile B2B Sitesi Geliştirme
 
-## Aldığım Eğitimde Öğrendiklerim
-
-- Bu eğitimle bir B2B e-ticaret sitesinin nasıl çalıştığını, nasıl bir yapıya sahip olması gerektiğini öğrendim.
 - MSSql ile ilişkili Database yazmayı ve bu Database Diagram kullanmayı öğrendim.
 - B2B için gereken Database yapısını Visual Studio içerisinde Entity olarak eklemeyi öğrendim.
 - Her bir entity'nin kurumsal mimari üzerinde nasıl bir yapıya sahip olması gerektiğini öğrendim.
