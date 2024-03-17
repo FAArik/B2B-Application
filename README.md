@@ -1,4 +1,4 @@
-# Simple Architecture ile B2B Sitesi Geliştirme
+#B2B Sitesi Geliştirme
 
 - MSSql ile ilişkili Database yazmayı ve bu Database Diagram kullanmayı öğrendim.
 - B2B için gereken Database yapısını Visual Studio içerisinde Entity olarak eklemeyi öğrendim.
